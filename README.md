@@ -17,3 +17,7 @@ No configuration is required; run the binary on the local machine.
 
 ### As container
 There are two key things here: mounting the Docker daemon socket to the container and exposing the Prometheus metrics endpoint 
+
+Because Docker does not give access to information out of the box, we can override values via environment variables.
+
+- `HOSTNAME` allows us to override the host found in `os.Hostname()`
