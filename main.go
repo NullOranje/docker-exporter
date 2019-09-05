@@ -20,10 +20,7 @@ func main() {
 
 	options := types.ContainerListOptions{All: true}
 	containerCh := make(chan exporter.Update, 10)
-	hostname, err := os.Hostname()
-	if err != nil {
-		hostname = "unknown"
-	}
+	hostname := getHostname()
 
 	go exporter.DockerContainerMetrics(containerCh)
 	go func() {
@@ -51,4 +48,16 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func getHostname() string {
+	if hostname, ok := os.LookupEnv("HOSTNAME"); ok {
+		return hostname
+	}
+
+	if hostname, err := os.Hostname(); err == nil {
+		return hostname
+	}
+
+	return "unknown"
 }
